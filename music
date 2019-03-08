@@ -41,7 +41,7 @@ def main
     when 'quit'
       break
     else
-      puts 'Valid commands: add, show, quit'
+      puts 'Valid commands: add, play, show, quit'
     end
   }
 

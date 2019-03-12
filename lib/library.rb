@@ -1,19 +1,19 @@
 require 'forwardable'
 
 class Library
-  @data = Hash.new{ |hash, key| hash[key] = [] }
+  extend Forwardable
+  def_delegators :@data, :[], :each, :slice, :has_key?
 
-  extend SingleForwardable
-  def_delegators :@data, :[], :each, :slice
+  def initialize
+    @data = Hash.new{ |hash, key| hash[key] = [] }
+  end
 
-  class << self
-    def find_album(title)
-      @data.each do |artist, albums|
-        albums.each do |album|
-          return [artist, album] if album[0] == title
-        end
+  def find_album(title)
+    @data.each do |artist, albums|
+      albums.each do |album|
+        return [artist, album] if album[0] == title
       end
-      nil
     end
+    nil
   end
 end

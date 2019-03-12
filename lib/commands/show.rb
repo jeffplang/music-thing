@@ -25,7 +25,7 @@ module Commands
     def execute
       parse_args
 
-      collection = @by ? Library.slice(@by) : Library
+      collection = @by ? @library.slice(@by) : @library
 
       collection.each do |artist, albums|
         albums.each do |album, played|

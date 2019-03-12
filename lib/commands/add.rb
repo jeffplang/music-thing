@@ -12,10 +12,10 @@ module Commands
     def execute
       album, artist = @args.map{ |t| t.tr '"', '' }
 
-      if Library.find_album(album)
+      if @library.find_album(album)
         puts "Already have \"#{album}\""
       else
-        Library[artist] << [album, false]
+        @library[artist] << [album, false]
         puts "Added \"#{album}\" by #{artist}"
       end
     end

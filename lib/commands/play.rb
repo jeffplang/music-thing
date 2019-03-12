@@ -1,4 +1,3 @@
-require_relative '../library'
 require_relative 'base'
 
 module Commands
@@ -11,7 +10,7 @@ module Commands
 
     def execute
       album_name = @args[0].tr '"', ''
-      artist, album = Library.find_album(album_name)
+      artist, album = @library.find_album(album_name)
 
       if artist.nil?
         puts 'Album not found'

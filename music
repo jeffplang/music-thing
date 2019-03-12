@@ -1,6 +1,9 @@
 #!/usr/bin/env ruby
 
 require_relative './lib/commands'
+require_relative './lib/library'
+
+library = Library.new
 
 puts 'Welcome to your music collection!'
 
@@ -12,11 +15,11 @@ loop {
   when 'quit'
     break
   when 'add'
-    cmd = Commands::Add.new(tokens)
+    cmd = Commands::Add.new(library, tokens)
   when 'play'
-    cmd = Commands::Play.new(tokens)
+    cmd = Commands::Play.new(library, tokens)
   when 'show'
-    cmd = Commands::Show.new(tokens)
+    cmd = Commands::Show.new(library, tokens)
   else
     puts 'Valid commands: add, play, show, quit'
     next

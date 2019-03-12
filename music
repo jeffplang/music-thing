@@ -1,51 +1,32 @@
 #!/usr/bin/env ruby
 
-def show_add_syntax
-  puts 'To Add: add "album" "artist"'
-end
+require_relative './lib/commands'
 
-def valid_add_cmd? tokens
-  tokens.length == 3 && tokens[1..-1].all?(/^"[[:print:]]+"$/)
-end
+puts 'Welcome to your music collection!'
 
-def main
-  library = Hash.new{ |hash, key| hash[key] = [] }
+loop {
+  print "> "
+  tokens = gets.chomp.scan /(?:\w|"[^"]*")+/
 
-  puts 'Welcome to your music collection!'
+  case tokens.shift
+  when 'quit'
+    break
+  when 'add'
+    cmd = Commands::Add.new(tokens)
+  when 'play'
+    cmd = Commands::Play.new(tokens)
+  when 'show'
+    cmd = Commands::Show.new(tokens)
+  else
+    puts 'Valid commands: add, play, show, quit'
+    next
+  end
 
-  loop {
-    print "> "
-    tokens = gets.chomp.scan /(?:\w|"[^"]*")+/
+  if cmd.valid?
+    cmd.execute
+  else
+    puts cmd.class::SYNTAX
+  end
+}
 
-    case tokens.first
-    when 'add'
-      unless valid_add_cmd? tokens
-        show_add_syntax
-        next
-      end
-
-      album, artist = tokens[1..-1].map{ |t| t.tr '"', '' }
-
-      if library[artist].include? album
-        puts "Already have \"#{album}\" by #{artist}"
-        next
-      end
-
-      library[artist] << [album, false]
-      puts "Added \"#{album}\" by #{artist}"
-    when 'play'
-      puts 'Doing play'
-    when 'show'
-      puts 'Doing show'
-      pp library
-    when 'quit'
-      break
-    else
-      puts 'Valid commands: add, play, show, quit'
-    end
-  }
-
-  puts 'Bye!'
-end
-
-main
+puts 'Bye!'
